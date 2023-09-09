@@ -14,7 +14,14 @@ terraform plan
 terraform apply
 ```
 
-You can use the following code to create an example module:
+You can use the following code to create and configure an example module:
+- https://gist.github.com/rkhullar/de91fa49db1dbf346ad1830e1b3e2dbb?file=interface.tf
+- https://gist.github.com/rkhullar/de91fa49db1dbf346ad1830e1b3e2dbb?file=default.tf
+- https://gist.github.com/rkhullar/de91fa49db1dbf346ad1830e1b3e2dbb?file=provider.tf
+- https://gist.github.com/rkhullar/de91fa49db1dbf346ad1830e1b3e2dbb?file=terraform.tfvars
+
+
+
 terraform.tfstate
 
 ### Terragrunt Intro
