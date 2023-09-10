@@ -116,8 +116,8 @@ exist for the subdomain you're using.
 For the live repo we don't need to cover each file. We'll add the root `terragrunt.hcl` and `common.hcl`, the `non-prod`
 `account.hcl`, and the `dev` `terragrunt.hcl` files.
 
-- https://gist.github.com/rkhullar/a244ec2fd1bc958fffc4ce3a44ed613e?file=live-terragrunt.hcl
-- https://gist.github.com/rkhullar/a244ec2fd1bc958fffc4ce3a44ed613e?file=live-common.hcl
+- https://gist.github.com/rkhullar/a244ec2fd1bc958fffc4ce3a44ed613e?file=live-root-terragrunt.hcl
+- https://gist.github.com/rkhullar/a244ec2fd1bc958fffc4ce3a44ed613e?file=live-root-common.hcl
 - https://gist.github.com/rkhullar/a244ec2fd1bc958fffc4ce3a44ed613e?file=live-account-template.hcl
 - https://gist.github.com/rkhullar/a244ec2fd1bc958fffc4ce3a44ed613e?file=live-dev-iam.hcl
 - https://gist.github.com/rkhullar/a244ec2fd1bc958fffc4ce3a44ed613e?file=live-dev-lambdas.hcl
@@ -135,6 +135,7 @@ terragrunt apply
 - [Terraform AWS Provider Documentation][aws-provider]
 - [Provider Plugin Cache][provider-plugin-cache]
 - [Terraform Tutorials][terraform-tutorials]
+- [Terraform Version Compatibility][terraform-version-compat]
 
 [terraform]: https://www.terraform.io
 [terragrunt]: https://terragrunt.gruntwork.io
@@ -144,3 +145,4 @@ terragrunt apply
 [auto-init]: https://terragrunt.gruntwork.io/docs/features/auto-init
 [provider-plugin-cache]: https://developer.hashicorp.com/terraform/cli/config/config-file#provider-plugin-cache
 [terraform-tutorials]: https://developer.hashicorp.com/terraform/tutorials
+[terraform-version-compat]: https://terragrunt.gruntwork.io/docs/getting-started/supported-terraform-versions
