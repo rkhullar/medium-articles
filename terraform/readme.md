@@ -2,12 +2,13 @@
 
 ### Objective
 Terraform and Terragrunt are powerful devops tools to manage cloud infrastructure as code. With this tutorial you'll learn
-how to manage resources for an example AWS project.
+how to manage resources for an example AWS project like my previous tutorial:
+[FastAPI on AWS with MongoDB Atlas and Okta][medium-fastpi]
 
 ### Terraform Intro
-Terraform allows us to define the infra resources we need for an AWS project as `.tf` files with HashiCorp Language (HCL).
+Terraform allows us to define the infrastructure resources we need for an AWS project as `.tf` files with HashiCorp Language (HCL).
 One or mode terraform files within a folder is called a terraform module. When you use terraform to create or update the
-infra resources for your project, you generally run the following commands within your module:
+infrastructure resources for your project, you generally run the following commands within your module:
 ```shell
 terraform init
 terraform plan
@@ -21,6 +22,7 @@ each day to refresh your profile's session credentials.
 You can use the code below to create and configure an example module. The module would be how you might start a Virtual
 Private Cloud (VPC) module. To use it for real projects you would need to add more resources like subnets, route tables,
 the internet gateway, nat gateways, and more.
+
 - https://gist.github.com/rkhullar/de91fa49db1dbf346ad1830e1b3e2dbb?file=interface.tf
 - https://gist.github.com/rkhullar/de91fa49db1dbf346ad1830e1b3e2dbb?file=default.tf
 - https://gist.github.com/rkhullar/de91fa49db1dbf346ad1830e1b3e2dbb?file=provider.tf
@@ -66,9 +68,11 @@ refer to those types of modules as "constructs." The `iam` construct will define
 `lambdas` and `api` constructs will define our lambda function and HTTP API Gateway respectively.
 
 The project structure for the `live` uses the following pattern:
+
 - https://gist.github.com/rkhullar/a244ec2fd1bc958fffc4ce3a44ed613e?file=live-template.txt
 
 So if you have two AWS accounts in your organization for `prod` and `non-prod` the complete structure would look like this:
+
 - https://gist.github.com/rkhullar/a244ec2fd1bc958fffc4ce3a44ed613e?file=live.txt
 
 The root `terragrunt.hcl` has logic for managing the remote state and for providing general context to each context like 
@@ -78,15 +82,18 @@ and the url reference to the `modules` repo.
 
 For the `modules` repo we'll have a folder for each construct. And as a good practice we should organize the terraform
 files based on responsibility. Here's the complete project structure for the `modules` repo:
+
 - https://gist.github.com/rkhullar/a244ec2fd1bc958fffc4ce3a44ed613e?file=modules.txt
 
 ### Module Code
 There is some code repetition within our constructs since we need to define common input variables and common tags.
+
 - https://gist.github.com/rkhullar/a244ec2fd1bc958fffc4ce3a44ed613e?file=module-common-interface.tf
 - https://gist.github.com/rkhullar/a244ec2fd1bc958fffc4ce3a44ed613e?file=modules-common-locals.tf
 - https://gist.github.com/rkhullar/a244ec2fd1bc958fffc4ce3a44ed613e?file=modules-common-provider.tf
 
 Starting with the `iam` construct let's add terraform code to create a basic lambda function role.
+
 - https://gist.github.com/rkhullar/a244ec2fd1bc958fffc4ce3a44ed613e?file=module-iam-default.tf
 - https://gist.github.com/rkhullar/a244ec2fd1bc958fffc4ce3a44ed613e?file=module-iam-interface.tf
 
@@ -95,6 +102,7 @@ the python lambda function. This is key since we want only to manage the configu
 like the runtime, memory, timeout, and environment variables. We don't want to actually manage the source code since that
 should live in another codebase and managed through a CI/CD pipeline. After the firs provision, the module should ignore
 changes to the lamda function source code.
+
 - https://gist.github.com/rkhullar/a244ec2fd1bc958fffc4ce3a44ed613e?file=module-lambdas-default.tf
 - https://gist.github.com/rkhullar/a244ec2fd1bc958fffc4ce3a44ed613e?file=module-lambdas-interface.tf
 - https://gist.github.com/rkhullar/a244ec2fd1bc958fffc4ce3a44ed613e?file=module-lambdas-remotes.tf
@@ -107,6 +115,7 @@ store entries, subnets, and security groups.
 Finally, let's implement the `api` construct. Note that before you run the terragrunt commands in the next session you'll
 need to have access to modify DNS records for a public domain name, and you'll need to make sure that ACM certificates 
 exist for the subdomain you're using.
+
 - https://gist.github.com/rkhullar/a244ec2fd1bc958fffc4ce3a44ed613e?file=module-api-default.tf
 - https://gist.github.com/rkhullar/a244ec2fd1bc958fffc4ce3a44ed613e?file=module-api-interface.tf
 - https://gist.github.com/rkhullar/a244ec2fd1bc958fffc4ce3a44ed613e?file=module-api-remotes.tf
@@ -146,3 +155,4 @@ terragrunt apply
 [provider-plugin-cache]: https://developer.hashicorp.com/terraform/cli/config/config-file#provider-plugin-cache
 [terraform-tutorials]: https://developer.hashicorp.com/terraform/tutorials
 [terraform-version-compat]: https://terragrunt.gruntwork.io/docs/getting-started/supported-terraform-versions
+[medium-fastpi]: https://medium.com/@rajan-khullar/fastapi-on-aws-with-mongodb-atlas-and-okta-6e37c1d9069
