@@ -141,9 +141,9 @@ terragrunt plan
 terragrunt apply
 ```
 
-Notice in the construct hcl files that terraform module source has a version number in the url. As you make changes within
-your `modules` repo you should create tags for the next semantic version. I suggest starting with `0.1.0` and incrementing
-the patch version if there are no breaking changes. Increment the minor or major version if there are changes that requir
+Notice in the construct hcl files that the `terraform` module sources have version numbers in the urls. As you make changes
+within your `modules` repo you should create tags for the next semantic version. I suggest starting with `0.1.0` and incrementing
+the patch version if there are no breaking changes. Increment the minor or major version if there are changes that require
 more complex commands like terraform state migration. And increment the major version if you are doing a major launch,
 or are upgrading the underlying system like the terraform version or the AWS provider version. After you've pushed the tag,
 you should update the references from within the `live` repo.
