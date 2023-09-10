@@ -14,6 +14,10 @@ terraform plan
 terraform apply
 ```
 
+You configure Terraform to access your AWS accounts the same way you would configure the AWS cli. You should set your
+`AWS_PROFILE` environment variable. And if you're working with an AWS organization you likely need to run `aws sso login`
+each day to refresh your profile's session credentials.
+
 You can use the code below to create and configure an example module. The module would be how you might start a Virtual
 Private Cloud (VPC) module. To use it for real projects you would need to add more resources like subnets, route tables,
 the internet gateway, nat gateways, and more.
@@ -51,10 +55,11 @@ to promote changes upwards across your environments. We should deploy to lower e
 deploying to `prod`. Terragrunt helps us easily achieve both of these goals, enabling us to efficiently use Terraform
 without code repetition or custom scripts.
 
-#### Project Structure
+### Project Structure
 We will use two Git repositories for managing our project infrastructure: `example-infra-live` and `example-infra-modules`.
 I recommend keeping at least the `live` repo private since it has hard coded configuration and details like your AWS account
-numbers and team email address.
+numbers and team email address. We are also going to reference [rkhullar/terraform-modules][common-modules]. That public repo
+has AWS modules and constructs that can be used across multiple projects.
 
 For our example project we'll create three modules that can managed independently of one another. From here on out we will
 refer to those types of modules as "constructs." The `iam` construct will define the iam roles for our project. And the
@@ -75,8 +80,46 @@ For the `modules` repo we'll have a folder for each construct. And as a good pra
 files based on responsibility. Here's the complete project structure for the `modules` repo:
 - https://gist.github.com/rkhullar/a244ec2fd1bc958fffc4ce3a44ed613e?file=modules.txt
 
+### Module Code
+There is some code repetition within our constructs since we need to define common input variables and common tags.
+- https://gist.github.com/rkhullar/a244ec2fd1bc958fffc4ce3a44ed613e?file=module-common-interface.tf
+- https://gist.github.com/rkhullar/a244ec2fd1bc958fffc4ce3a44ed613e?file=modules-common-locals.tf
+- https://gist.github.com/rkhullar/a244ec2fd1bc958fffc4ce3a44ed613e?file=modules-common-provider.tf
+
+Starting with the `iam` construct let's add terraform code to create a basic lambda function role.
+- https://gist.github.com/rkhullar/a244ec2fd1bc958fffc4ce3a44ed613e?file=module-iam-default.tf
+- https://gist.github.com/rkhullar/a244ec2fd1bc958fffc4ce3a44ed613e?file=module-iam-interface.tf
+
+Next let's add code to manage the example lambda function. The `remotes.tf` code reads the remote state from the `iam`
+construct so that we have access to the full iam role name. We could have inferred the name instead via terraform
+interpolation, but I prefer this method since I think it's more practical. For my own projects I would need the construct
+to read other remote states for referencing parameter store values or security groups.
+- https://gist.github.com/rkhullar/a244ec2fd1bc958fffc4ce3a44ed613e?file=module-lambdas-default.tf
+- https://gist.github.com/rkhullar/a244ec2fd1bc958fffc4ce3a44ed613e?file=module-lambdas-remotes.tf
+- https://gist.github.com/rkhullar/a244ec2fd1bc958fffc4ce3a44ed613e?file=module-lambdas-interface.tf
+
+Finally, let's implement the `api` construct. Note that before you run the terragrunt commands in the next session you'll
+need to have access to modify DNS records for a public domain name, and you'll need to make sure that ACM certificates 
+exist for the subdomain you're using.
+- https://gist.github.com/rkhullar/a244ec2fd1bc958fffc4ce3a44ed613e?file=module-api-default.tf
+- https://gist.github.com/rkhullar/a244ec2fd1bc958fffc4ce3a44ed613e?file=module-api-remotes.tf
+- https://gist.github.com/rkhullar/a244ec2fd1bc958fffc4ce3a44ed613e?file=module-lambdas-interface.tf
+
+### Live Code
+For the live repo we don't need to cover each file. We'll add the root `terragrunt.hcl` and `common.hcl`, the `non-prod`
+`account.hcl`, and the `dev` `terragrunt.hcl` files.
+
+- https://gist.github.com/rkhullar/a244ec2fd1bc958fffc4ce3a44ed613e?file=live-terragrunt.hcl
+- https://gist.github.com/rkhullar/a244ec2fd1bc958fffc4ce3a44ed613e?file=live-common.hcl
+- https://gist.github.com/rkhullar/a244ec2fd1bc958fffc4ce3a44ed613e?file=live-account-template.hcl
+- https://gist.github.com/rkhullar/a244ec2fd1bc958fffc4ce3a44ed613e?file=live-dev-iam.hcl
+- https://gist.github.com/rkhullar/a244ec2fd1bc958fffc4ce3a44ed613e?file=live-dev-lambdas.hcl
+- https://gist.github.com/rkhullar/a244ec2fd1bc958fffc4ce3a44ed613e?file=live-dev-api.hcl
+
+
 
 [terraform]: https://www.terraform.io
 [terragrunt]: https://terragrunt.gruntwork.io
 [hashicorp]: https://www.hashicorp.com
 [aws-provider]: https://registry.terraform.io/providers/hashicorp/aws/latest/docs
+[common-modules]: https://github.com/rkhullar/terraform-modules
