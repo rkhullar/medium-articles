@@ -15,7 +15,7 @@ terraform plan
 terraform apply
 ```
 
-You configure Terraform to access your AWS accounts the same way you would configure the AWS cli. You should set your
+You configure Terraform to access your AWS accounts the same way you would configure the AWS CLI. You should set your
 `AWS_PROFILE` environment variable. And if you're working with an AWS organization you likely need to run `aws sso login`
 each day to refresh your profile's session credentials.
 
