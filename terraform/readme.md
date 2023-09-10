@@ -143,7 +143,7 @@ terragrunt apply
 
 ### Additional Reading
 - [Terraform AWS Provider Documentation][aws-provider]
-- [Provider Plugin Cache][provider-plugin-cache]
+- [Terraform Provider Plugin Cache][provider-plugin-cache]
 - [Terraform Tutorials][terraform-tutorials]
 - [Terraform Version Compatibility][terraform-version-compat]
 - [Terraform Module Registry][terraform-module-registry]
