@@ -7,7 +7,7 @@ how to manage resources for an example AWS project like my previous tutorial:
 
 ### Terraform Intro
 Terraform allows us to define the infrastructure resources we need for an AWS project as `.tf` files with HashiCorp Language (HCL).
-One or mode terraform files within a folder is called a terraform module. When you use terraform to create or update the
+One or more terraform files within a folder is called a terraform module. When you use terraform to create or update the
 infrastructure resources for your project, you generally run the following commands within your module:
 ```shell
 terraform init
@@ -34,9 +34,10 @@ the state file is used to generate a change plan during subsequent applies. The 
 created, updated, or deleted.
 
 ### Terragrunt Intro
-"Terragrunt is a thin wrapper that provides extra tools for keeping your configurations DRY, working with multiple
-Terraform modules, and managing remote state." There are limits with Terraform around managing the tfstate and reusing code
-that are solved with terragrunt.
+_"Terragrunt is a thin wrapper that provides extra tools for keeping your configurations DRY, working with multiple
+Terraform modules, and managing remote state."_
+
+There are limits with Terraform around managing the tfstate and reusing code that are solved with terragrunt.
 
 #### Remote State
 It's essential to store the tfstate files in a shared and secure location. You should not store them locally,
