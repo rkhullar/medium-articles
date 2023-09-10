@@ -96,8 +96,8 @@ like the runtime, memory, timeout, and environment variables. We don't want to a
 should live in another codebase and managed through a CI/CD pipeline. After the firs provision, the module should ignore
 changes to the lamda function source code.
 - https://gist.github.com/rkhullar/a244ec2fd1bc958fffc4ce3a44ed613e?file=module-lambdas-default.tf
-- https://gist.github.com/rkhullar/a244ec2fd1bc958fffc4ce3a44ed613e?file=module-lambdas-remotes.tf
 - https://gist.github.com/rkhullar/a244ec2fd1bc958fffc4ce3a44ed613e?file=module-lambdas-interface.tf
+- https://gist.github.com/rkhullar/a244ec2fd1bc958fffc4ce3a44ed613e?file=module-lambdas-remotes.tf
 
 The `remotes.tf` code reads the remote state from the `iam` construct so that we have access to the full iam role name
 We could have inferred the name instead via terraform interpolation, but I prefer this method since I think it's more
@@ -108,8 +108,9 @@ Finally, let's implement the `api` construct. Note that before you run the terra
 need to have access to modify DNS records for a public domain name, and you'll need to make sure that ACM certificates 
 exist for the subdomain you're using.
 - https://gist.github.com/rkhullar/a244ec2fd1bc958fffc4ce3a44ed613e?file=module-api-default.tf
+- https://gist.github.com/rkhullar/a244ec2fd1bc958fffc4ce3a44ed613e?file=module-api-interface.tf
 - https://gist.github.com/rkhullar/a244ec2fd1bc958fffc4ce3a44ed613e?file=module-api-remotes.tf
-- https://gist.github.com/rkhullar/a244ec2fd1bc958fffc4ce3a44ed613e?file=module-lambdas-interface.tf
+- https://gist.github.com/rkhullar/a244ec2fd1bc958fffc4ce3a44ed613e?file=module-api-domain.tf
 
 ### Live Code
 For the live repo we don't need to cover each file. We'll add the root `terragrunt.hcl` and `common.hcl`, the `non-prod`
