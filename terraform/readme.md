@@ -90,13 +90,19 @@ Starting with the `iam` construct let's add terraform code to create a basic lam
 - https://gist.github.com/rkhullar/a244ec2fd1bc958fffc4ce3a44ed613e?file=module-iam-default.tf
 - https://gist.github.com/rkhullar/a244ec2fd1bc958fffc4ce3a44ed613e?file=module-iam-interface.tf
 
-Next let's add code to manage the example lambda function. The `remotes.tf` code reads the remote state from the `iam`
-construct so that we have access to the full iam role name. We could have inferred the name instead via terraform
-interpolation, but I prefer this method since I think it's more practical. For my own projects I would need the construct
-to read other remote states for referencing parameter store values or security groups.
+Next let's add code to manage the example lambda function. The underlying module code uses hello world code to provision
+the python lambda function. This is key since we want only to manage the configuration for the lambda function in terraform,
+like the runtime, memory, timeout, and environment variables. We don't want to actually manage the source code since that
+should live in another codebase and managed through a CI/CD pipeline. After the firs provision, the module should ignore
+changes to the lamda function source code.
 - https://gist.github.com/rkhullar/a244ec2fd1bc958fffc4ce3a44ed613e?file=module-lambdas-default.tf
 - https://gist.github.com/rkhullar/a244ec2fd1bc958fffc4ce3a44ed613e?file=module-lambdas-remotes.tf
 - https://gist.github.com/rkhullar/a244ec2fd1bc958fffc4ce3a44ed613e?file=module-lambdas-interface.tf
+
+The `remotes.tf` code reads the remote state from the `iam` construct so that we have access to the full iam role name
+We could have inferred the name instead via terraform interpolation, but I prefer this method since I think it's more
+practical. For my own projects I would need the construct to read other remote states for referencing things like parameter
+store entries, subnets, and security groups.
 
 Finally, let's implement the `api` construct. Note that before you run the terragrunt commands in the next session you'll
 need to have access to modify DNS records for a public domain name, and you'll need to make sure that ACM certificates 
@@ -116,10 +122,24 @@ For the live repo we don't need to cover each file. We'll add the root `terragru
 - https://gist.github.com/rkhullar/a244ec2fd1bc958fffc4ce3a44ed613e?file=live-dev-lambdas.hcl
 - https://gist.github.com/rkhullar/a244ec2fd1bc958fffc4ce3a44ed613e?file=live-dev-api.hcl
 
+In order to provision the `dev` environment you would navigate to the corresponding `iam`, `lambdas`, and `api` `hcl` files
+and run the following commands: The `init` command is actually optional since [auto-init][auto-init] is enabled by default.
+```shell
+terragrunt init
+terragrunt plan
+terragrunt apply
+```
 
+### Additional Reading
+- [Terraform AWS Provider Documentation][aws-provider]
+- [Provider Plugin Cache][provider-plugin-cache]
+- [Terraform Tutorials][terraform-tutorials]
 
 [terraform]: https://www.terraform.io
 [terragrunt]: https://terragrunt.gruntwork.io
 [hashicorp]: https://www.hashicorp.com
 [aws-provider]: https://registry.terraform.io/providers/hashicorp/aws/latest/docs
 [common-modules]: https://github.com/rkhullar/terraform-modules
+[auto-init]: https://terragrunt.gruntwork.io/docs/features/auto-init
+[provider-plugin-cache]: https://developer.hashicorp.com/terraform/cli/config/config-file#provider-plugin-cache
+[terraform-tutorials]: https://developer.hashicorp.com/terraform/tutorials
