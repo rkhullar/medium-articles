@@ -2,7 +2,7 @@
 
 ### Objective
 Terraform and Terragrunt are powerful devops tools to manage cloud infrastructure as code. With this tutorial you'll learn
-how to manage resources for an example AWS project like my previous tutorial:
+how to manage resources for an example AWS project like from my previous tutorial:
 [FastAPI on AWS with MongoDB Atlas and Okta][medium-fastpi]
 
 ### Terraform Intro
