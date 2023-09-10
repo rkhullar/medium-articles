@@ -42,7 +42,7 @@ There are limits with Terraform around managing the tfstate and reusing code tha
 #### Remote State
 It's essential to store the tfstate files in a shared and secure location. You should not store them locally,
 and you should not store them in version control either. For AWS projects it's common to store the tfstate files inside
-S3 buckets and to use dynamodb table for state locking. With the remote state bucket, you and your teammates have shared
+S3 buckets and to use dynamodb tables for state locking. With the remote state bucket, you and your teammates have shared
 access to your project's tfstate files. And with the lock table we ensure that only one `terraform apply` command against
 the tfstate can run at a time.
 
@@ -61,8 +61,8 @@ without code repetition or custom scripts.
 ### Project Structure
 We will use two Git repositories for managing our project infrastructure: `example-infra-live` and `example-infra-modules`.
 I recommend keeping at least the `live` repo private since it has hard coded configuration and details like your AWS account
-numbers and team email address. We are also going to reference [rkhullar/terraform-modules][common-modules]. That public repo
-has AWS modules and constructs that can be used across multiple projects.
+numbers and team email address. We are also going to reference [rkhullar/terraform-modules][common-modules]. That repo has
+AWS modules and constructs that can be used across multiple projects.
 
 For our example project we'll create three modules that can managed independently of one another. From here on out we will
 refer to those types of modules as "constructs." The `iam` construct will define the iam roles for our project. And the
@@ -98,11 +98,11 @@ Starting with the `iam` construct let's add terraform code to create a basic lam
 - https://gist.github.com/rkhullar/a244ec2fd1bc958fffc4ce3a44ed613e?file=module-iam-default.tf
 - https://gist.github.com/rkhullar/a244ec2fd1bc958fffc4ce3a44ed613e?file=module-iam-interface.tf
 
-Next let's add code to manage the example lambda function. The underlying module code uses hello world code to provision
-the python lambda function. This is key since we want only to manage the configuration for the lambda function in terraform,
+Next let's add code to manage the lambda function itself. The underlying module uses hello world code to provision the
+python lambda function. This is key since we want only to manage the configuration for the lambda function in terraform,
 like the runtime, memory, timeout, and environment variables. We don't want to actually manage the source code since that
-should live in another codebase and managed through a CI/CD pipeline. After the firs provision, the module should ignore
-changes to the lamda function source code.
+should live in another codebase and managed through a CI/CD pipeline. After the first provision, the module should ignore
+changes to the lamda function's source code.
 
 - https://gist.github.com/rkhullar/a244ec2fd1bc958fffc4ce3a44ed613e?file=module-lambdas-default.tf
 - https://gist.github.com/rkhullar/a244ec2fd1bc958fffc4ce3a44ed613e?file=module-lambdas-interface.tf
@@ -146,6 +146,7 @@ terragrunt apply
 - [Provider Plugin Cache][provider-plugin-cache]
 - [Terraform Tutorials][terraform-tutorials]
 - [Terraform Version Compatibility][terraform-version-compat]
+- [Terraform Module Registry][terraform-module-registry]
 
 [terraform]: https://www.terraform.io
 [terragrunt]: https://terragrunt.gruntwork.io
@@ -157,3 +158,4 @@ terragrunt apply
 [terraform-tutorials]: https://developer.hashicorp.com/terraform/tutorials
 [terraform-version-compat]: https://terragrunt.gruntwork.io/docs/getting-started/supported-terraform-versions
 [medium-fastpi]: https://medium.com/@rajan-khullar/fastapi-on-aws-with-mongodb-atlas-and-okta-6e37c1d9069
+[terraform-module-registry]: https://registry.terraform.io/browse/modules
