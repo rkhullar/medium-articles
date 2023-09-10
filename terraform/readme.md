@@ -90,8 +90,8 @@ files based on responsibility. Here's the complete project structure for the `mo
 There is some code repetition within our constructs since we need to define common input variables and common tags.
 
 - https://gist.github.com/rkhullar/a244ec2fd1bc958fffc4ce3a44ed613e?file=module-common-interface.tf
-- https://gist.github.com/rkhullar/a244ec2fd1bc958fffc4ce3a44ed613e?file=modules-common-locals.tf
-- https://gist.github.com/rkhullar/a244ec2fd1bc958fffc4ce3a44ed613e?file=modules-common-provider.tf
+- https://gist.github.com/rkhullar/a244ec2fd1bc958fffc4ce3a44ed613e?file=module-common-locals.tf
+- https://gist.github.com/rkhullar/a244ec2fd1bc958fffc4ce3a44ed613e?file=module-common-provider.tf
 
 Starting with the `iam` construct let's add terraform code to create a basic lambda function role.
 
